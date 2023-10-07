@@ -1,6 +1,6 @@
 // import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Image, StatusBar,FlatList, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
+import { Image, StatusBar, FlatList, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { Card } from 'react-native-paper';
 
 
@@ -42,44 +42,44 @@ export default function Dashboard({ navigation }) {
     };
     const cardData = [
         {
-          icon: 'newsletter',
-          backgroundColor: '#17A589',
-          count: 3,
-          text: 'Recently Updated Items',
+            icon: 'newsletter',
+            backgroundColor: '#17A589',
+            count: 3,
+            text: 'Recently Updated Items',
         },
         {
-          icon: 'newsletter',
-          backgroundColor: 'tomato',
-          count: 120,
-          text: 'Outdated / Expired Items',
+            icon: 'newsletter',
+            backgroundColor: 'tomato',
+            count: 120,
+            text: 'Outdated / Expired Items',
         },
         {
             icon: 'newsletter',
             backgroundColor: '#ACA7B2',
             count: 120,
             text: 'Outdated / Expired Items',
-          },
-          {
+        },
+        {
             icon: 'newsletter',
             backgroundColor: '#FCFCFC',
             count: 120,
             text: 'Outdated / Expired Items',
-          },
-          {
+        },
+        {
             icon: 'newsletter',
             backgroundColor: '#FCFCFC',
             count: 120,
             text: 'Outdated / Expired Items',
-          },
-       
-      ];
-      const renderItem = ({ item }) => (
+        },
+
+    ];
+    const renderItem = ({ item }) => (
         <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
-          <Entypo name={item.icon} size={24} style={styles.icon} color="#fff" />
-          <Text style={styles.count}>{item.count}</Text>
-          <Text style={styles.text}>{item.text}</Text>
+            <Entypo name={item.icon} size={24} style={styles.icon} color="#fff" />
+            <Text style={styles.count}>{item.count}</Text>
+            <Text style={styles.text}>{item.text}</Text>
         </View>
-      );
+    );
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
@@ -92,41 +92,41 @@ export default function Dashboard({ navigation }) {
                 {/* <EvilIcons name="search" size={24} color="black" /> */}
                 <Ionicons name="add-circle" size={24} color="#fff" onPress={toggleModalTodo} />
             </View>
-         
 
-                <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#615E64', justifyContent: 'center' }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
-                        <View style={{ width: "20%", padding: 10 }}>
-                            <FontAwesome name="tasks" size={24} color="black" />
+            <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#615E64', justifyContent: 'center' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
-                        </View>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '70%' }}>
-                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: 'tomato', fontSize: 16, marginLeft: 10 }}>
-                                    ● Urgent: 3
-                                </Text>
-                            </View>
-                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: '#17A589', fontSize: 16, marginLeft: 10 }}>
-                                    ● Today's: 1
-                                </Text>
-                            </View>
-                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: '#ACA7B2', fontSize: 16, marginLeft: 10 }}>
-                                    ● Past: 3
-                                </Text>
-                            </View>
-                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: '#FCFCFC', fontSize: 16, marginLeft: 10 }}>
-                                    ● Upcoming: 1
-                                </Text>
-                            </View>
-                        </View>
+                    <View style={{ width: "20%", padding: 10 }}>
+                        <FontAwesome name="tasks" size={24} color="black" />
 
                     </View>
-                </Card>
-                <ScrollView
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '70%' }}>
+                        <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ color: 'tomato', fontSize: 16, marginLeft: 10 }}>
+                                ● Urgent: 3
+                            </Text>
+                        </View>
+                        <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ color: '#17A589', fontSize: 16, marginLeft: 10 }}>
+                                ● Today's: 1
+                            </Text>
+                        </View>
+                        <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ color: '#ACA7B2', fontSize: 16, marginLeft: 10 }}>
+                                ● Past: 3
+                            </Text>
+                        </View>
+                        <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ color: '#FCFCFC', fontSize: 16, marginLeft: 10 }}>
+                                ● Upcoming: 1
+                            </Text>
+                        </View>
+                    </View>
+
+                </View>
+            </Card>
+            <ScrollView
             >
                 <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20, color: '#fff' }}>
                     Welcome, Muluken</Text>
@@ -141,25 +141,22 @@ export default function Dashboard({ navigation }) {
                     </ScrollView>
                 </View>
                 <View>
-                   
+
                     <FlatList
-      data={cardData}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      numColumns={2} // This specifies 2 columns
-      contentContainerStyle={styles.grid}
-    />
+                        data={cardData}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        numColumns={2} // This specifies 2 columns
+                        contentContainerStyle={styles.grid}
+                    />
                 </View>
-
                 <View>
-
-
                     <View style={{ height: 100, }} >
 
                     </View>
                 </View>
             </ScrollView>
-            <StatusBar backgroundColor='black' />
+            <StatusBar backgroundColor='#363537' />
         </View>
     );
 }
@@ -174,25 +171,25 @@ const styles = StyleSheet.create({
     grid: {
         paddingVertical: 10,
         paddingHorizontal: 10,
-      },
-      card: {
+    },
+    card: {
         flex: 1,
         padding: 10,
         borderRadius: 20,
         margin: 5,
         alignItems: 'center',
-      },
-      icon: {
+    },
+    icon: {
         alignSelf: 'flex-end',
-      },
-      count: {
+    },
+    count: {
         alignSelf: 'center',
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 35,
-      },
-      text: {
+    },
+    text: {
         color: '#fff',
         fontSize: 13,
-      },
+    },
 });
