@@ -36,50 +36,61 @@ export default function Dashboard({ navigation }) {
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
-      };
-      const toggleModalTodo = () => {
+    };
+    const toggleModalTodo = () => {
         setModalVisibleTodo(!isModalVisibleTodo);
-      };
+    };
     return (
         <View style={styles.container}>
-      <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
-      <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} />
+            <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
+            <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} />
 
             <View style={{ marginLeft: 10, marginTop: 10, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Entypo name="menu" size={24} color="#fff" onPress={toggleModal}/>
-                <Text style={{ fontWeight: 'bold', color:'#fff' }}>My Todos</Text>
+                <Entypo name="menu" size={24} color="#fff" onPress={toggleModal} />
+                <Text style={{ fontWeight: 'bold', color: '#fff' }}>My Todos</Text>
                 {/* <Text style={{ fontWeight: 'bold' }}>Search</Text> */}
                 {/* <EvilIcons name="search" size={24} color="black" /> */}
-                <Ionicons name="add-circle" size={24} color="#fff" onPress={toggleModalTodo}/>
+                <Ionicons name="add-circle" size={24} color="#fff" onPress={toggleModalTodo} />
             </View>
-            <ScrollView
-            >
+         
 
                 <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#615E64', justifyContent: 'center' }}>
-                    <View style={{ marginLeft: 10, marginRight: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
-                        <View>
-                <FontAwesome name="tasks" size={24} color="black" />
-                            
-                        </View>
-                        <View style={{ marginLeft: 30 }}>
-                            <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
-                                <Text style={{ color: 'tomato', fontWeight: '', fontSize: 16 }}>● Urgent: 3 items </Text>
-                                <Text style={{ color: 'green', fontWeight: '', fontSize: 16 }}>● Today's: 1 Item </Text>
-                            </View>
-
-                            <View style={{ flexDirection: 'row', justifyContent:'space-evenly' }}>
-                                <Text style={{ color: 'tomato', fontWeight: '', fontSize: 16 }}>● Urgent: 3 items </Text>
-                                <Text style={{ color: 'green', fontWeight: '', fontSize: 16 }}>● Today's: 1 Item </Text>
-                            </View>
+                        <View style={{ width: "20%", padding: 10 }}>
+                            <FontAwesome name="tasks" size={24} color="black" />
 
                         </View>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '70%' }}>
+                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ color: 'tomato', fontSize: 16, marginLeft: 10 }}>
+                                    ● Urgent: 3
+                                </Text>
+                            </View>
+                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ color: '#17A589', fontSize: 16, marginLeft: 10 }}>
+                                    ● Today's: 1
+                                </Text>
+                            </View>
+                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ color: '#ACA7B2', fontSize: 16, marginLeft: 10 }}>
+                                    ● Past: 3
+                                </Text>
+                            </View>
+                            <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ color: '#FCFCFC', fontSize: 16, marginLeft: 10 }}>
+                                    ● Upcoming: 1
+                                </Text>
+                            </View>
+                        </View>
+
                     </View>
                 </Card>
-
-                <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20, color:'#fff' }}>
+                <ScrollView
+            >
+                <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20, color: '#fff' }}>
                     Welcome, Muluken</Text>
-                    <View>
+                <View>
                     <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}>
@@ -105,24 +116,23 @@ export default function Dashboard({ navigation }) {
                         </View>
                     </View>
                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#1B54DB', height: 130, width: 180 }}>
+                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#ACA7B2', height: 130, width: 180 }}>
                             <MaterialIcons name="category" size={24} style={{ alignSelf: 'flex-end' }} color="#fff" />
                             <Text style={{ alignSelf: 'center', color: '#fff', fontWeight: 'bold', fontSize: 35 }}>7</Text>
                             <Text style={{ color: '#fff', fontSize: 13 }}>Item under my category</Text>
                             {/* <Text style={{ color: '#fff', fontSize: 18 }}>category</Text> */}
                         </View>
-                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#8E44AD', height: 130, width: 180 }}>
-                            <FontAwesome name="sticky-note" size={24} style={{ alignSelf: 'flex-end' }} color="#fff" />
-                            <Text style={{ alignSelf: 'center', color: '#fff', fontWeight: 'bold', fontSize: 35 }}>13</Text>
-                            <Text style={{ color: '#fff', fontSize: 13 }}>Active Items</Text>
-                            {/* <Text style={{ color: '#fff', fontSize: 18 }}>Items</Text> */}
+                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#FCFCFC', height: 130, width: 180 }}>
+                            <FontAwesome name="sticky-note" size={24} style={{ alignSelf: 'flex-end' }} color="#222" />
+                            <Text style={{ alignSelf: 'center', color: '#222', fontWeight: 'bold', fontSize: 35 }}>13</Text>
+                            <Text style={{ color: '#222', fontSize: 13 }}>Active Items</Text>
                         </View>
                     </View>
 
                 </View>
 
                 <View>
-                    
+
 
                     <View style={{ height: 100, }} >
 
@@ -139,6 +149,6 @@ const styles = StyleSheet.create({
         // marginTop: Platform.OS === 'android' ? stbar.currentHeight : 0,
         // justifyContent:'center',
         height: hheight,
-        backgroundColor:'#363537'
+        backgroundColor: '#363537'
     },
 });
