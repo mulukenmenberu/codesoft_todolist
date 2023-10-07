@@ -1,6 +1,6 @@
 // import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Image, StatusBar, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
+import { Image, StatusBar,FlatList, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { Card } from 'react-native-paper';
 
 
@@ -40,6 +40,46 @@ export default function Dashboard({ navigation }) {
     const toggleModalTodo = () => {
         setModalVisibleTodo(!isModalVisibleTodo);
     };
+    const cardData = [
+        {
+          icon: 'newsletter',
+          backgroundColor: '#17A589',
+          count: 3,
+          text: 'Recently Updated Items',
+        },
+        {
+          icon: 'newsletter',
+          backgroundColor: 'tomato',
+          count: 120,
+          text: 'Outdated / Expired Items',
+        },
+        {
+            icon: 'newsletter',
+            backgroundColor: '#ACA7B2',
+            count: 120,
+            text: 'Outdated / Expired Items',
+          },
+          {
+            icon: 'newsletter',
+            backgroundColor: '#FCFCFC',
+            count: 120,
+            text: 'Outdated / Expired Items',
+          },
+          {
+            icon: 'newsletter',
+            backgroundColor: '#FCFCFC',
+            count: 120,
+            text: 'Outdated / Expired Items',
+          },
+       
+      ];
+      const renderItem = ({ item }) => (
+        <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
+          <Entypo name={item.icon} size={24} style={styles.icon} color="#fff" />
+          <Text style={styles.count}>{item.count}</Text>
+          <Text style={styles.text}>{item.text}</Text>
+        </View>
+      );
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
@@ -101,34 +141,14 @@ export default function Dashboard({ navigation }) {
                     </ScrollView>
                 </View>
                 <View>
-                    <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#17A589', height: 130, width: 180 }}>
-                            <Entypo name="newsletter" size={24} style={{ alignSelf: 'flex-end' }} color="#fff" />
-                            <Text style={{ alignSelf: 'center', color: '#fff', fontWeight: 'bold', fontSize: 35 }}>3</Text>
-                            <Text style={{ color: '#fff', fontSize: 13 }}>Recently Updated Items</Text>
-                            {/* <Text style={{ color: '#fff', fontSize: 13 }}>Items</Text> */}
-                        </View>
-                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: 'tomato', height: 130, width: 180 }}>
-                            <Ionicons name="alarm" size={24} style={{ alignSelf: 'flex-end' }} color="#fff" />
-                            <Text style={{ alignSelf: 'center', color: '#fff', fontWeight: 'bold', fontSize: 35 }}>120</Text>
-                            <Text style={{ color: '#fff', fontSize: 13 }}>Outdated / expired Items</Text>
-                            {/* <Text style={{ color: '#fff', fontSize: 18 }}>Items</Text> */}
-                        </View>
-                    </View>
-                    <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#ACA7B2', height: 130, width: 180 }}>
-                            <MaterialIcons name="category" size={24} style={{ alignSelf: 'flex-end' }} color="#fff" />
-                            <Text style={{ alignSelf: 'center', color: '#fff', fontWeight: 'bold', fontSize: 35 }}>7</Text>
-                            <Text style={{ color: '#fff', fontSize: 13 }}>Item under my category</Text>
-                            {/* <Text style={{ color: '#fff', fontSize: 18 }}>category</Text> */}
-                        </View>
-                        <View style={{ padding: 10, borderRadius: 20, backgroundColor: '#FCFCFC', height: 130, width: 180 }}>
-                            <FontAwesome name="sticky-note" size={24} style={{ alignSelf: 'flex-end' }} color="#222" />
-                            <Text style={{ alignSelf: 'center', color: '#222', fontWeight: 'bold', fontSize: 35 }}>13</Text>
-                            <Text style={{ color: '#222', fontSize: 13 }}>Active Items</Text>
-                        </View>
-                    </View>
-
+                   
+                    <FlatList
+      data={cardData}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      numColumns={2} // This specifies 2 columns
+      contentContainerStyle={styles.grid}
+    />
                 </View>
 
                 <View>
@@ -151,4 +171,28 @@ const styles = StyleSheet.create({
         height: hheight,
         backgroundColor: '#363537'
     },
+    grid: {
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+      },
+      card: {
+        flex: 1,
+        padding: 10,
+        borderRadius: 20,
+        margin: 5,
+        alignItems: 'center',
+      },
+      icon: {
+        alignSelf: 'flex-end',
+      },
+      count: {
+        alignSelf: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 35,
+      },
+      text: {
+        color: '#fff',
+        fontSize: 13,
+      },
 });
