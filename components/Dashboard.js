@@ -43,31 +43,31 @@ export default function Dashboard({ navigation }) {
     const cardData = [
         {
             icon: 'newsletter',
-            backgroundColor: '#17A589',
+            backgroundColor: '#707B7C',
             count: 3,
             text: 'Recently Updated Items',
         },
         {
             icon: 'newsletter',
-            backgroundColor: 'tomato',
+            backgroundColor: '#FFBF00',
             count: 120,
             text: 'Outdated / Expired Items',
         },
         {
             icon: 'newsletter',
             backgroundColor: '#ACA7B2',
+            count: 0,
+            text: 'Outdated / Expired Items',
+        },
+        {
+            icon: 'newsletter',
+            backgroundColor: '#6495ED',
             count: 120,
             text: 'Outdated / Expired Items',
         },
         {
             icon: 'newsletter',
-            backgroundColor: '#FCFCFC',
-            count: 120,
-            text: 'Outdated / Expired Items',
-        },
-        {
-            icon: 'newsletter',
-            backgroundColor: '#FCFCFC',
+            backgroundColor: '#6495ED',
             count: 120,
             text: 'Outdated / Expired Items',
         },
@@ -75,8 +75,10 @@ export default function Dashboard({ navigation }) {
     ];
     const renderItem = ({ item }) => (
         <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
-            <Entypo name={item.icon} size={24} style={styles.icon} color="#fff" />
+            {item.count>0?<Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
+            <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
             <Text style={styles.count}>{item.count}</Text>
+            
             <Text style={styles.text}>{item.text}</Text>
         </View>
     );
@@ -94,7 +96,7 @@ export default function Dashboard({ navigation }) {
             </View>
 
 
-            <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#615E64', justifyContent: 'center' }}>
+            <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#566573', justifyContent: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
                     <View style={{ width: "20%", padding: 10 }}>
@@ -103,12 +105,12 @@ export default function Dashboard({ navigation }) {
                     </View>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '70%' }}>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ color: 'tomato', fontSize: 16, marginLeft: 10 }}>
-                                ● Urgent: 3
+                            <Text style={{ color: '#FFBF00', fontSize: 16, marginLeft: 10 }}>
+                                ● Important: 3
                             </Text>
                         </View>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ color: '#17A589', fontSize: 16, marginLeft: 10 }}>
+                            <Text style={{ color: '#707B7C', fontSize: 16, marginLeft: 10 }}>
                                 ● Today's: 1
                             </Text>
                         </View>
@@ -118,7 +120,7 @@ export default function Dashboard({ navigation }) {
                             </Text>
                         </View>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ color: '#FCFCFC', fontSize: 16, marginLeft: 10 }}>
+                            <Text style={{ color: '#6495ED', fontSize: 16, marginLeft: 10 }}>
                                 ● Upcoming: 1
                             </Text>
                         </View>
@@ -136,7 +138,7 @@ export default function Dashboard({ navigation }) {
                         showsHorizontalScrollIndicator={false}>
                         <Text onPress={() => setActive(0)} style={{ margin: 20, fontWeight: active == 0 ? 'bold' : '', color: active == 0 ? '#2062F9' : '#CBD1DF' }}>All Todos</Text>
                         <Text onPress={() => setActive(1)} style={{ margin: 20, fontWeight: active == 1 ? 'bold' : '', color: active == 1 ? '#2062F9' : '#CBD1DF' }}>Past Items</Text>
-                        <Text onPress={() => setActive(2)} style={{ margin: 20, fontWeight: active == 2 ? 'bold' : '', color: active == 2 ? '#2062F9' : '#CBD1DF' }}>Top Urgent</Text>
+                        <Text onPress={() => setActive(2)} style={{ margin: 20, fontWeight: active == 2 ? 'bold' : '', color: active == 2 ? '#2062F9' : '#CBD1DF' }}>Important</Text>
                         <Text onPress={() => setActive(3)} style={{ margin: 20, fontWeight: active == 3 ? 'bold' : '', color: active == 3 ? '#2062F9' : '#CBD1DF' }}>Today`s</Text>
                     </ScrollView>
                 </View>
