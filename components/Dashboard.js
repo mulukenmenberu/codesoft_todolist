@@ -75,10 +75,9 @@ export default function Dashboard({ navigation }) {
     ];
     const renderItem = ({ item }) => (
         <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
-            {item.count>0?<Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
-            <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
+            {item.count > 0 ? <Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
+                <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
             <Text style={styles.count}>{item.count}</Text>
-            
             <Text style={styles.text}>{item.text}</Text>
         </View>
     );
