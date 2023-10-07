@@ -46,16 +46,16 @@ export default function Dashboard({ navigation }) {
       <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} />
 
             <View style={{ marginLeft: 10, marginTop: 10, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Entypo name="menu" size={24} color="black" onPress={toggleModal}/>
-                <Text style={{ fontWeight: 'bold' }}>My Todos</Text>
+            <Entypo name="menu" size={24} color="#fff" onPress={toggleModal}/>
+                <Text style={{ fontWeight: 'bold', color:'#fff' }}>My Todos</Text>
                 {/* <Text style={{ fontWeight: 'bold' }}>Search</Text> */}
                 {/* <EvilIcons name="search" size={24} color="black" /> */}
-                <Ionicons name="add-circle" size={24} color="black" onPress={toggleModalTodo}/>
+                <Ionicons name="add-circle" size={24} color="#fff" onPress={toggleModalTodo}/>
             </View>
             <ScrollView
             >
 
-                <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#F0F3F7', justifyContent: 'center' }}>
+                <Card style={{ marginTop: 10, alignSelf: 'center', height: 80, width: width - 20, backgroundColor: '#615E64', justifyContent: 'center' }}>
                     <View style={{ marginLeft: 10, marginRight: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
 
                         <View>
@@ -77,7 +77,7 @@ export default function Dashboard({ navigation }) {
                     </View>
                 </Card>
 
-                <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20 }}>
+                <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20, color:'#fff' }}>
                     Welcome, Muluken</Text>
                     <View>
                     <ScrollView
@@ -129,16 +129,16 @@ export default function Dashboard({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
-            <StatusBar style="auto" />
+            <StatusBar backgroundColor='black' />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: Platform.OS === 'android' ? stbar.currentHeight : 0,
+        // marginTop: Platform.OS === 'android' ? stbar.currentHeight : 0,
         // justifyContent:'center',
-        // height: hheight
-        // backgroundColor:'black'
+        height: hheight,
+        backgroundColor:'#363537'
     },
 });
