@@ -13,7 +13,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Settings from './Settings'; // Replace with your actual component path
 import AddTodo from './AddTodo';
-import latest from '../data/latest.json'
 const hheight = Dimensions.get('screen').height
 
 export default function Dashboard({ navigation }) {
@@ -23,12 +22,7 @@ export default function Dashboard({ navigation }) {
     const [isModalVisibleTodo, setModalVisibleTodo] = useState(false);
 
 
-    useEffect(() => {
-        latest.map((item) => {
-            console.log(item.content)
 
-        })
-    }, [])
 
     const measureTextHeight = (text, fontSize, width) => {
         const numberOfLines = 3.5; // Define the maximum number of lines

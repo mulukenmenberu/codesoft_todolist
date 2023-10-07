@@ -2,6 +2,7 @@
 import {Image,StatusBar, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
 const hheight = Dimensions.get('screen').height
+import Entypo from 'react-native-vector-icons/Entypo';
 
 export default function Splash({navigation}) {
   const {width,height} = Dimensions.get('screen')
@@ -9,9 +10,9 @@ export default function Splash({navigation}) {
     <ImageBackground source={require('./assets/image.png')} resizeMode='cover'>
     <SafeAreaView style={styles.container}>
  
+    <Entypo 
+style={{alignSelf:'center', marginTop:-50}} name="evernote" size={130} color="orange" />
       
-      <Image source={require('./assets/logo.png')}
-style={{width:150,height:150, alignSelf:'center', marginTop:-50}} />
 
 
 <Text style={{justifyContent:'center', alignItems:'center', fontSize:20, alignSelf:'center'}}>
