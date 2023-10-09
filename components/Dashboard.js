@@ -13,6 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Settings from './Settings'; // Replace with your actual component path
 import AddTodo from './AddTodo';
+import { getAllTodos } from './RealmServices';
 const hheight = Dimensions.get('screen').height
 
 export default function Dashboard({ navigation }) {
@@ -20,6 +21,7 @@ export default function Dashboard({ navigation }) {
     const [active, setActive] = useState(0)
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisibleTodo, setModalVisibleTodo] = useState(false);
+    const [todos, setTodos] = useState([]);
 
 
 
@@ -40,47 +42,37 @@ export default function Dashboard({ navigation }) {
     const toggleModalTodo = () => {
         setModalVisibleTodo(!isModalVisibleTodo);
     };
-    const cardData = [
-        {
-            icon: 'newsletter',
-            backgroundColor: '#707B7C',
-            count: 3,
-            text: 'Recently Updated Items',
-        },
-        {
-            icon: 'newsletter',
-            backgroundColor: '#FFBF00',
-            count: 120,
-            text: 'Outdated / Expired Items',
-        },
-        {
-            icon: 'newsletter',
-            backgroundColor: '#ACA7B2',
-            count: 0,
-            text: 'Outdated / Expired Items',
-        },
-        {
-            icon: 'newsletter',
-            backgroundColor: '#6495ED',
-            count: 120,
-            text: 'Outdated / Expired Items',
-        },
-        {
-            icon: 'newsletter',
-            backgroundColor: '#6495ED',
-            count: 120,
-            text: 'Outdated / Expired Items',
-        },
+    const backGroundColor = {"important":"#FFBF00","todays":"#707B7C","past":"#ACA7B2","upcomming":"#6495ED"}
 
-    ];
+    const getBackground = (type, actionDate)=>{
+        if(actionDate<1){
+            return backGroundColor['past']
+        } else if(type=='important'){
+            return backGroundColor['important']
+        }else if(actionDate==1){
+            return backGroundColor['todays']
+        }else if(actionDate>1){
+            return backGroundColor['upcomming']
+        }
+        return backGroundColor['upcomming']
+       
+    }
+
+    
     const renderItem = ({ item }) => (
-        <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
+        <View style={[styles.card, { backgroundColor: getBackground(item.priority) }]}>
             {item.count > 0 ? <Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
                 <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
-            <Text style={styles.count}>{item.count}</Text>
-            <Text style={styles.text}>{item.text}</Text>
+            <Text style={styles.date}>{item.actionDate}</Text>
+            <Text style={styles.text}>{item.title}</Text>
         </View>
     );
+    useEffect(() => {
+        // Fetch data from SQLite when the component mounts
+        getAllTodos((data) => {
+          setTodos(data);
+        });
+      }, []);
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
@@ -144,7 +136,7 @@ export default function Dashboard({ navigation }) {
                 <View>
 
                     <FlatList
-                        data={cardData}
+                        data={todos}
                         renderItem={renderItem}
                         keyExtractor={(item, index) => index.toString()}
                         numColumns={2} // This specifies 2 columns
@@ -188,6 +180,12 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 35,
+    },
+    date: {
+        alignSelf: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 23,
     },
     text: {
         color: '#fff',

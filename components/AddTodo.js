@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
-
+import { addTodo } from './RealmServices';
 const AddTodo = ({ isVisible, toggleModal }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -13,50 +13,62 @@ const AddTodo = ({ isVisible, toggleModal }) => {
   const [descriptionError, setDescriptionError] = useState('');
   const [actionDateError, setActionDateError] = useState('');
   const [priorityError, setPriorityError] = useState('');
-
   const handleSave = () => {
-    let isValid = true;
-
+    // Initialize an empty errors object to track validation errors
+    const errors = {};
+  
+    // Validate the "Title" field
     if (title.trim() === '') {
-      setTitleError('Title is required');
-      isValid = false;
-    } else {
-      setTitleError('');
+      errors.title = 'Title is required';
     }
-
+  
+    // Validate the "Description" field
     if (description.trim() === '') {
-      setDescriptionError('Description is required');
-      isValid = false;
-    } else {
-      setDescriptionError('');
+      errors.description = 'Description is required';
     }
-
+  
+    // Validate the "Action Date" field
     if (actionDate.trim() === '') {
-      setActionDateError('Action Date is required');
-      isValid = false;
-    } else {
-      setActionDateError('');
+      errors.actionDate = 'Action Date is required';
     }
-
+  
+    // Validate the "Priority" field
     if (priority.trim() === '') {
-      setPriorityError('Priority is required');
-      isValid = false;
-    } else {
-      setPriorityError('');
+      errors.priority = 'Priority is required';
     }
-
-    if (isValid) {
-      // Perform your save action here
-      // Reset the error states
-      setTitleError('');
-      setDescriptionError('');
-      setActionDateError('');
-      setPriorityError('');
-      // Close the modal
-      toggleModal();
+  
+    // If there are validation errors, set the error states and return
+    if (Object.keys(errors).length > 0) {
+      setTitleError(errors.title || '');
+      setDescriptionError(errors.description || '');
+      setActionDateError(errors.actionDate || '');
+      setPriorityError(errors.priority || '');
+      return;
     }
+  
+    // Save data to SQLite
+    addTodo({
+      title,
+      description,
+      actionDate,
+      priority,
+      count:0
+    });
+  
+    // Reset the form fields and error states
+    setTitle('');
+    setDescription('');
+    setActionDate('');
+    setPriority('');
+    setTitleError('');
+    setDescriptionError('');
+    setActionDateError('');
+    setPriorityError('');
+  
+    // Close the modal
+    toggleModal();
   };
-
+  
   return (
     <Modal
       isVisible={isVisible}
