@@ -3,40 +3,47 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-nativ
 import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
 import { addTodo } from './RealmServices';
+import CheckBox from '@react-native-community/checkbox';
+import DatePicker from '@react-native-community/datetimepicker';
+// import DatePicker from 'react-native-datepicker'; // Import DatePicker
+import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
+
 const AddTodo = ({ isVisible, toggleModal }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [actionDate, setActionDate] = useState('');
+  const [actionDate, setActionDate] = useState(new Date());
   const [priority, setPriority] = useState('');
-  
+
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [actionDateError, setActionDateError] = useState('');
   const [priorityError, setPriorityError] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false); // Control date picker visibility
+
   const handleSave = () => {
     // Initialize an empty errors object to track validation errors
     const errors = {};
-  
+
     // Validate the "Title" field
     if (title.trim() === '') {
       errors.title = 'Title is required';
     }
-  
+
     // Validate the "Description" field
     if (description.trim() === '') {
       errors.description = 'Description is required';
     }
-  
+
     // Validate the "Action Date" field
     if (actionDate.trim() === '') {
       errors.actionDate = 'Action Date is required';
     }
-  
+
     // Validate the "Priority" field
     if (priority.trim() === '') {
       errors.priority = 'Priority is required';
     }
-  
+
     // If there are validation errors, set the error states and return
     if (Object.keys(errors).length > 0) {
       setTitleError(errors.title || '');
@@ -45,16 +52,16 @@ const AddTodo = ({ isVisible, toggleModal }) => {
       setPriorityError(errors.priority || '');
       return;
     }
-  
+
     // Save data to SQLite
     addTodo({
       title,
       description,
       actionDate,
       priority,
-      count:0
+      count: 0
     });
-  
+
     // Reset the form fields and error states
     setTitle('');
     setDescription('');
@@ -64,11 +71,11 @@ const AddTodo = ({ isVisible, toggleModal }) => {
     setDescriptionError('');
     setActionDateError('');
     setPriorityError('');
-  
+
     // Close the modal
     toggleModal();
   };
-  
+
   return (
     <Modal
       isVisible={isVisible}
@@ -91,7 +98,7 @@ const AddTodo = ({ isVisible, toggleModal }) => {
           }}
         />
         {titleError ? <Text style={styles.errorText}>{titleError}</Text> : null}
-        
+
         <TextInput
           style={[
             styles.input,
@@ -108,36 +115,25 @@ const AddTodo = ({ isVisible, toggleModal }) => {
         {descriptionError ? <Text style={styles.errorText}>{descriptionError}</Text> : null}
 
         <View style={styles.row}>
-          <TextInput
+          <TouchableOpacity
             style={[
               styles.input,
               styles.halfWidth,
               actionDateError ? styles.inputError : null,
             ]}
-            placeholder="Action Date"
-            value={actionDate}
-            onChangeText={(text) => {
-              setActionDate(text);
-              setActionDateError('');
-            }}
-          />
-          <Picker
-            style={[
-              styles.input,
-              styles.halfWidth,
-              priorityError ? styles.inputError : null,
-            ]}
-            selectedValue={priority}
-            onValueChange={(itemValue) => {
-              setPriority(itemValue);
+            onPress={() => setShowDatePicker(true)} // Show the date picker on press
+          >
+            <Text>{actionDate.toDateString()}</Text>
+          </TouchableOpacity>
+          <CheckBox
+            style={styles.checkbox}
+            value={priority === 'medium'}
+            onValueChange={() => {
+              setPriority('medium');
               setPriorityError('');
             }}
-          >
-            <Picker.Item label="Select Priority" value="" />
-            <Picker.Item label="Low" value="low" />
-            <Picker.Item label="Medium" value="medium" />
-            <Picker.Item label="High" value="high" />
-          </Picker>
+          />
+          <Text style={styles.checkboxLabel}>Important</Text>
         </View>
         {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
         {priorityError ? <Text style={styles.errorText}>{priorityError}</Text> : null}
@@ -146,6 +142,22 @@ const AddTodo = ({ isVisible, toggleModal }) => {
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
+      {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={actionDate}
+          mode="date"
+          display="spinner" // Use 'spinner' to display as a spinner
+          onChange={(event, date) => {
+            setShowDatePicker(false); // Hide the date picker
+            if (event.type === 'set') {
+              setActionDate(date);
+              setActionDateError('');
+            }
+          }}
+        />
+      )}
     </Modal>
   );
 };

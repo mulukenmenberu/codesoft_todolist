@@ -42,23 +42,23 @@ export default function Dashboard({ navigation }) {
     const toggleModalTodo = () => {
         setModalVisibleTodo(!isModalVisibleTodo);
     };
-    const backGroundColor = {"important":"#FFBF00","todays":"#707B7C","past":"#ACA7B2","upcomming":"#6495ED"}
+    const backGroundColor = { "important": "#FFBF00", "todays": "#707B7C", "past": "#ACA7B2", "upcomming": "#6495ED" }
 
-    const getBackground = (type, actionDate)=>{
-        if(actionDate<1){
+    const getBackground = (type, actionDate) => {
+        if (actionDate < 1) {
             return backGroundColor['past']
-        } else if(type=='important'){
+        } else if (type == 'important') {
             return backGroundColor['important']
-        }else if(actionDate==1){
+        } else if (actionDate == 1) {
             return backGroundColor['todays']
-        }else if(actionDate>1){
+        } else if (actionDate > 1) {
             return backGroundColor['upcomming']
         }
         return backGroundColor['upcomming']
-       
+
     }
 
-    
+
     const renderItem = ({ item }) => (
         <View style={[styles.card, { backgroundColor: getBackground(item.priority) }]}>
             {item.count > 0 ? <Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
@@ -70,9 +70,9 @@ export default function Dashboard({ navigation }) {
     useEffect(() => {
         // Fetch data from SQLite when the component mounts
         getAllTodos((data) => {
-          setTodos(data);
+            setTodos(data);
         });
-      }, []);
+    }, []);
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
@@ -142,6 +142,7 @@ export default function Dashboard({ navigation }) {
                         numColumns={2} // This specifies 2 columns
                         contentContainerStyle={styles.grid}
                     />
+                    <Text style={{ color: '#ACA7B2', fontSize: 23, alignSelf: 'center', marginTop: 70 }}>No Todo Items Added</Text>
                 </View>
                 <View>
                     <View style={{ height: 100, }} >
