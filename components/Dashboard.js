@@ -61,7 +61,7 @@ export default function Dashboard({ navigation }) {
         <View style={[styles.card, { backgroundColor: getBackground(item.priority) }]}>
             {item.count > 0 ? <Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
                 <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
-            <Text style={styles.date}>{item.actionDate}</Text>
+            <Text style={styles.date}>{item.actionDate }</Text>
             <Text style={styles.text}>{item.title}</Text>
         </View>
     );
@@ -69,12 +69,21 @@ export default function Dashboard({ navigation }) {
         // Fetch data from SQLite when the component mounts
         getAllTodos((data) => {
             setTodos(data);
+            console.log(data, "jjjjjjjjjjjj")
         });
     }, []);
+
+    const refreshData = () => {
+        // Fetch data from SQLite when the component mounts
+        getAllTodos((data) => {
+          setTodos(data);
+        });
+      };
+    
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
-            <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} />
+            <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} refreshData={refreshData}/>
 
             <View style={{ marginLeft: 10, marginTop: 10, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Entypo name="menu" size={24} color="#fff" onPress={toggleModal} />
@@ -140,7 +149,7 @@ export default function Dashboard({ navigation }) {
                         numColumns={2} // This specifies 2 columns
                         contentContainerStyle={styles.grid}
                     />
-                    <Text style={{ color: '#ACA7B2', fontSize: 23, alignSelf: 'center', marginTop: 70 }}>No Todo Items Added</Text>
+                    {todos.length<=0?<Text style={{ color: '#ACA7B2', fontSize: 23, alignSelf: 'center', marginTop: 70 }}>No Todo Items Added</Text>:''}
                 </View>
                 <View>
                     <View style={{ height: 100, }} >

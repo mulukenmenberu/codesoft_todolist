@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
@@ -8,7 +8,7 @@ import DatePicker from '@react-native-community/datetimepicker';
 // import DatePicker from 'react-native-datepicker'; // Import DatePicker
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 
-const AddTodo = ({ isVisible, toggleModal }) => {
+const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [actionDate, setActionDate] = useState(new Date());
@@ -34,7 +34,7 @@ const AddTodo = ({ isVisible, toggleModal }) => {
     }
 
     // Validate the "Action Date" field
-    if (actionDate.trim() === '') {
+    if (actionDate === '') {
       errors.actionDate = 'Action Date is required';
     }
 
@@ -52,14 +52,20 @@ const AddTodo = ({ isVisible, toggleModal }) => {
     }
 
     // Save data to SQLite
+    // actionDate = actionDate.toLocaleDateString()
+    // actionDate = actionDate.replace(/\//g, '-');
+    let d = actionDate.toISOString();
+     let newDate = d.split('T')[0];
+
+console.log(newDate, "sjfdisuhfiuhiu")
     addTodo({
       title,
       description,
-      actionDate,
+      newDate,
       priority,
       count: 0
     });
-
+    refreshData()
     // Reset the form fields and error states
     setTitle('');
     setDescription('');
@@ -73,6 +79,12 @@ const AddTodo = ({ isVisible, toggleModal }) => {
     toggleModal();
   };
 
+
+  const formattedDate = actionDate
+  ? `${actionDate.getFullYear()}-${(actionDate.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${actionDate.getDate().toString().padStart(2, '0')}`
+  : new Date().toLocaleDateString();
   return (
     <Modal
       isVisible={isVisible}
@@ -120,7 +132,7 @@ const AddTodo = ({ isVisible, toggleModal }) => {
             ]}
             onPress={() => setShowDatePicker(true)} // Show the date picker on press
           >
-            <Text>{actionDate.toDateString()}</Text>
+            <Text>{formattedDate}</Text>
           </TouchableOpacity>
           <CheckBox
             style={styles.checkbox}
