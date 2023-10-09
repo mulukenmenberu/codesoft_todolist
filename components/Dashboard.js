@@ -167,9 +167,18 @@ export default function Dashboard({ navigation }) {
                             </Text>
                         </View>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{flexDirection:'row'}}>
+                            <Text style={{ color: '#FFBF00', fontSize: 16, marginLeft: 10 }}>
+                            ● 
+                            </Text> 
+                            <Text style={{ color: '#FFBF00', fontSize: 16, marginLeft: 10 }}>
+                            +
+                            </Text> 
+
                             <Text style={{ color: '#6495ED', fontSize: 16, marginLeft: 10 }}>
-                                ● Upcoming: {upcoming || 0}
+                            ●  Upcoming: {upcoming || 0}
                             </Text>
+                            </View>
                         </View>
                     </View>
 
