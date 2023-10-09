@@ -55,7 +55,6 @@ const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
     let d = actionDate.toISOString();
      let newDate = d.split('T')[0];
 
-console.log(newDate, "sjfdisuhfiuhiu")
     addTodo({
       title,
       description,
@@ -152,7 +151,7 @@ console.log(newDate, "sjfdisuhfiuhiu")
 
       {showDatePicker && (
         <DateTimePicker
-          value={actionDate}
+          value={new Date()}
           mode="date"
           display="spinner" // Use 'spinner' to display as a spinner
           onChange={(event, date) => {
