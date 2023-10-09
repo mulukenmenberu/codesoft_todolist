@@ -13,11 +13,24 @@ const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
   const [description, setDescription] = useState('');
   const [actionDate, setActionDate] = useState(new Date());
   const [priority, setPriority] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [actionDateError, setActionDateError] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false); // Control date picker visibility
+
+
+  const toggleCheck = ()=>{
+    setIsChecked(!isChecked)
+    if(isChecked){
+      setPriority('important')
+    }else{
+      setPriority('')
+
+    }
+   
+}
 
   const handleSave = () => {
     // Initialize an empty errors object to track validation errors
@@ -135,9 +148,7 @@ const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
           <CheckBox
             style={styles.checkbox}
             value={priority === 'important'}
-            onValueChange={() => {
-              setPriority('important');
-            }}
+            onValueChange={toggleCheck}
           />
           <Text style={styles.checkboxLabel}>Important</Text>
         </View>

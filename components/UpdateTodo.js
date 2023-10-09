@@ -15,24 +15,37 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
   const [priority, setPriority] = useState('');
   const [count, setCount] = useState('');
   const [id, setId] = useState(0);
-
+  const [isChecked, setIsChecked] = useState(false);
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [actionDateError, setActionDateError] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false); // Control date picker visibility
 
-  const handleDelete = ()=>{
+
+
+  const toggleCheck = () => {
+    setIsChecked(!isChecked)
+    if (isChecked) {
+      setPriority('important')
+    } else {
+      setPriority('')
+
+    }
+
+  }
+
+  const handleDelete = () => {
     deleteTodo(id)
     refreshData()
     toggleModal();
   }
-    const handleUpdate= ()=>{
-      let d = actionDate.toISOString();
-      let newDate = d.split('T')[0];
-      updateTodo(id, {
+  const handleUpdate = () => {
+    let d = actionDate.toISOString();
+    let newDate = d.split('T')[0];
+    updateTodo(id, {
       title,
       description,
-      actionDate:newDate,
+      actionDate: newDate,
       priority,
       count: 1
     })
@@ -59,7 +72,7 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
     }
 
     // Validate the "Priority" field
-  
+
 
     // If there are validation errors, set the error states and return
     if (Object.keys(errors).length > 0) {
@@ -73,12 +86,12 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
     // actionDate = actionDate.toLocaleDateString()
     // actionDate = actionDate.replace(/\//g, '-');
     let d = actionDate.toISOString();
-     let newDate = d.split('T')[0];
+    let newDate = d.split('T')[0];
 
-     updateTodo(id, {
+    updateTodo(id, {
       title,
       description,
-      actionDate:newDate,
+      actionDate: newDate,
       priority,
       count: count
     });
@@ -97,13 +110,13 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
     toggleModal();
   };
 
- 
+
 
   const formattedDate = actionDate
-  ? `${actionDate.getFullYear()}-${(actionDate.getMonth() + 1)
+    ? `${actionDate.getFullYear()}-${(actionDate.getMonth() + 1)
       .toString()
       .padStart(2, '0')}-${actionDate.getDate().toString().padStart(2, '0')}`
-  : new Date().toLocaleDateString();
+    : new Date().toLocaleDateString();
 
 
   useEffect(() => {
@@ -170,26 +183,24 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
           <CheckBox
             style={styles.checkbox}
             value={priority === 'important'}
-            onValueChange={() => {
-              setPriority('important');
-            }}
+            onValueChange={toggleCheck}
           />
           <Text style={styles.checkboxLabel}>Important</Text>
         </View>
         {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
 
         <View style={styles.row2}>
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>Save Changes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonDoner} onPress={handleUpdate}>
-          <Text style={styles.buttonText}>Mark as Done</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
+            <Text style={styles.buttonText}>Save Changes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonDoner} onPress={handleUpdate}>
+            <Text style={styles.buttonText}>Mark as Done</Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.buttonDanger} onPress={handleDelete}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
-       
+
       </View>
       {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
 
