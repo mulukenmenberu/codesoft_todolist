@@ -12,7 +12,7 @@ const db = SQLite.openDatabase(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         description TEXT,
-        actionDate DATE,
+        actionDate TEXT,
         priority TEXT,
         count INTEGER
       );`,

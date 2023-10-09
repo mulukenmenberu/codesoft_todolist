@@ -39,9 +39,7 @@ const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
     }
 
     // Validate the "Priority" field
-    if (priority.trim() === '') {
-      errors.priority = 'Priority is required';
-    }
+  
 
     // If there are validation errors, set the error states and return
     if (Object.keys(errors).length > 0) {
@@ -61,10 +59,11 @@ console.log(newDate, "sjfdisuhfiuhiu")
     addTodo({
       title,
       description,
-      newDate,
+      actionDate:newDate,
       priority,
       count: 0
     });
+    setActionDate(new Date())
     refreshData()
     // Reset the form fields and error states
     setTitle('');

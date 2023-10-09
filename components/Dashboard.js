@@ -42,7 +42,7 @@ export default function Dashboard({ navigation }) {
     const getBackground = (priority, actionDate) => {
         const today = new Date(); // Get the current date as a Date object
         const selectedDate = new Date(actionDate); // Convert actionDate to a Date object
-
+console.log(actionDate, today)
         if (selectedDate < today) {
             return backGroundColor['past']
         } else if (priority == 'important') {
@@ -58,11 +58,12 @@ export default function Dashboard({ navigation }) {
 
 
     const renderItem = ({ item }) => (
-        <View style={[styles.card, { backgroundColor: getBackground(item.priority) }]}>
+        <View style={[styles.card, { backgroundColor: getBackground(item.priority, item.actionDate) }]}>
             {item.count > 0 ? <Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
                 <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
             <Text style={styles.date}>{item.actionDate }</Text>
             <Text style={styles.text}>{item.title}</Text>
+            <Text style={styles.text}>{item.description}</Text>
         </View>
     );
     useEffect(() => {
