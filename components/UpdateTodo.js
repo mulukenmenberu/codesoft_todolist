@@ -9,7 +9,6 @@ import DatePicker from '@react-native-community/datetimepicker';
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 
 const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
-  console.log(updateData, "works ")
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [actionDate, setActionDate] = useState(new Date());

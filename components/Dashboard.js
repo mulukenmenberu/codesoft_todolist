@@ -49,15 +49,28 @@ export default function Dashboard({ navigation }) {
     const getBackground = (priority, actionDate) => {
         const today = new Date(); // Get the current date as a Date object
         const selectedDate = new Date(actionDate); // Convert actionDate to a Date object
-        if (selectedDate < today) {
+        
+        // Extract year, month, and date components
+        const todayYear = today.getFullYear();
+        const todayMonth = today.getMonth();
+        const todayDate = today.getDate();
+        
+        const selectedYear = selectedDate.getFullYear();
+        const selectedMonth = selectedDate.getMonth();
+        const selectedDay = selectedDate.getDate();
+
+
+     if (selectedYear === todayYear && selectedMonth === todayMonth && selectedDay === todayDate) {
+        return backGroundColor['todays']
+         }else if (selectedYear < todayYear || (selectedYear === todayYear && selectedMonth < todayMonth) || (selectedYear === todayYear && selectedMonth === todayMonth && selectedDay < todayDate)) {
             return backGroundColor['past']
-        } else if (priority == 'important') {
+        }  
+        else if (priority == 'important') {
             return backGroundColor['important']
-        } else if (selectedDate == today) {
-            return backGroundColor['todays']
-        } else if (selectedDate > today) {
-            return backGroundColor['upcomming']
-        }
+        } 
+        // else if (selectedDate > today) {
+        //     return backGroundColor['upcomming']
+        // }
         return backGroundColor['upcomming']
 
     }
