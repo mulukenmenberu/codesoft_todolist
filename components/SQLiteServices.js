@@ -24,6 +24,36 @@ const db = SQLite.openDatabase(
         console.error('Error creating table "todos":', error);
       }
     );
+
+    // Create the "settings" table if it doesn't exist
+    db.executeSql(
+      `CREATE TABLE IF NOT EXISTS settings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        deleteolditems INTEGER
+      );`,
+      [],
+      () => {
+        console.log('Table "settings" created successfully.');
+      },
+      (error) => {
+        console.error('Error creating table "settings":', error);
+      }
+    );
+
+    // Insert default settings data
+    db.transaction((tx) => {
+      tx.executeSql(
+        'INSERT INTO settings (name, deleteolditems) VALUES (?, ?)',
+        ['User', 0],
+        () => {
+          console.log('Settings added successfully.');
+        },
+        (error) => {
+          console.error('Error adding settings:', error);
+        }
+      );
+    });
   },
   (error) => {
     console.error('Error opening the database:', error);
@@ -46,6 +76,21 @@ export const addTodo = (todoData) => {
       },
       (error) => {
         console.error('Error adding todo:', error);
+      }
+    );
+  });
+};
+
+export const updateSetting = (updateSetting) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'UPDATE settings SET name=?, deleteolditems=?',
+      [updateSetting.name, updateSetting.deleteolditems],
+      () => {
+        console.log('Setting updated successfully.');
+      },
+      (error) => {
+        console.error('Error updating Setting:', error);
       }
     );
   });
@@ -99,6 +144,25 @@ export const getAllTodos = (callback) => {
       },
       (error) => {
         console.error('Error fetching todos:', error);
+        callback([]);
+      }
+    );
+  });
+};
+
+
+
+export const getSettings = (callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'SELECT * FROM settings LIMIT 1',
+      [],
+      (_, { rows }) => {
+        const settings = rows.raw();
+        callback(settings);
+      },
+      (error) => {
+        console.error('Error fetching settings:', error);
         callback([]);
       }
     );

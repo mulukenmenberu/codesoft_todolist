@@ -7,95 +7,67 @@ import CheckBox from '@react-native-community/checkbox';
 import DatePicker from '@react-native-community/datetimepicker';
 // import DatePicker from 'react-native-datepicker'; // Import DatePicker
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
+import { updateSetting } from './SQLiteServices';
+const Settings = ({ isVisible, toggleModal, refreshSettings, settingData }) => {
+  const [name, setName] = useState('User');
 
-const Settings = ({ isVisible, toggleModal, refreshData }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [actionDate, setActionDate] = useState(new Date());
   const [priority, setPriority] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-
   const [titleError, setTitleError] = useState('');
-  const [descriptionError, setDescriptionError] = useState('');
-  const [actionDateError, setActionDateError] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false); // Control date picker visibility
+  const [settingdata, setSettingData] = useState('');
 
-
-  const toggleCheck = ()=>{
+  const toggleCheck = () => {
     setIsChecked(!isChecked)
-    if(isChecked){
+    if (isChecked) {
       setPriority('important')
-    }else{
+    } else {
       setPriority('')
 
     }
-   
-}
+
+  }
 
   const handleSave = () => {
     // Initialize an empty errors object to track validation errors
     const errors = {};
 
     // Validate the "Title" field
-    if (title.trim() === '') {
-      errors.title = 'Title is required';
+    if (name.trim() === '') {
+      errors.name = 'Name is required';
     }
 
-    // Validate the "Description" field
-    if (description.trim() === '') {
-      errors.description = 'Description is required';
-    }
-
-    // Validate the "Action Date" field
-    if (actionDate === '') {
-      errors.actionDate = 'Action Date is required';
-    }
 
     // Validate the "Priority" field
-  
+
 
     // If there are validation errors, set the error states and return
     if (Object.keys(errors).length > 0) {
-      setTitleError(errors.title || '');
-      setDescriptionError(errors.description || '');
-      setActionDateError(errors.actionDate || '');
+      setTitleError(errors.name || '');
       return;
     }
 
-    // Save data to SQLite
-    // actionDate = actionDate.toLocaleDateString()
-    // actionDate = actionDate.replace(/\//g, '-');
-    let d = actionDate.toISOString();
-     let newDate = d.split('T')[0];
 
-    addTodo({
-      title,
-      description,
-      actionDate:newDate,
-      priority,
-      count: 0
+    updateSetting({
+      name,
+      isChecked: isChecked ? 1 : 0,
     });
-    setActionDate(new Date())
-    refreshData()
+    refreshSettings()
     // Reset the form fields and error states
-    setTitle('');
-    setDescription('');
-    setActionDate('');
+    setName('');
     setPriority('');
     setTitleError('');
-    setDescriptionError('');
-    setActionDateError('');
+
 
     // Close the modal
     toggleModal();
   };
 
 
-  const formattedDate = actionDate
-  ? `${actionDate.getFullYear()}-${(actionDate.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${actionDate.getDate().toString().padStart(2, '0')}`
-  : new Date().toLocaleDateString();
+  useEffect(() => {
+    console.log(settingData, "=======")
+    setName(settingData.name)
+    setPriority(settingData.priority == 1 ? 'important' : '')
+  }, [])
 
 
   return (
@@ -112,17 +84,17 @@ const Settings = ({ isVisible, toggleModal, refreshData }) => {
             styles.input,
             titleError ? styles.inputError : null,
           ]}
-          placeholder="Title"
-          value={title}
+          placeholder="User"
+          value={name}
           onChangeText={(text) => {
-            setTitle(text);
+            setName(text);
             setTitleError('');
           }}
         />
         {titleError ? <Text style={styles.errorText}>{titleError}</Text> : null}
 
         <View style={styles.row}>
-         
+
           <CheckBox
             style={styles.checkbox}
             value={priority === 'important'}
@@ -130,13 +102,11 @@ const Settings = ({ isVisible, toggleModal, refreshData }) => {
           />
           <Text style={styles.checkboxLabel}>Auto Delete Past Todos</Text>
         </View>
-        {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
 
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
-      {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
 
     </Modal>
   );
@@ -181,7 +151,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     // justifyContent: 'space-between',
-    alignItems:'center',
+    alignItems: 'center',
     marginBottom: 10,
   },
   halfWidth: {

@@ -9,7 +9,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Settings from './Settings'; // Replace with your actual component path
 import AddTodo from './AddTodo';
 import UpdateTodo from './UpdateTodo';
-import { getAllTodos } from './SQLiteServices';
+import { getAllTodos, getSettings } from './SQLiteServices';
+
 const hheight = Dimensions.get('screen').height
 
 export default function Dashboard({ navigation }) {
@@ -20,6 +21,10 @@ export default function Dashboard({ navigation }) {
     const [isModalVisibleTodoUpdate, setModalVisibleTodoUPDATE] = useState(false);
     const [todos, setTodos] = useState([]);
     const [updateData, setUpdateDate] = useState({});
+
+    const [name, setName] = useState('');
+    const [priority, setPriority] = useState('');
+    const [settingData, setSettingData] = useState('');
 
     
 
@@ -94,12 +99,35 @@ export default function Dashboard({ navigation }) {
         getAllTodos((data) => {
             setTodos(data);
         });
+
+        getSettings((data) => {
+            setSettingData(data[0]);
+            setName(data[0].name)
+            //setIsChecked
+            setPriority(data[0].deleteolditems)
+    
+    
+        });
+
     }, []);
 
+
+
+    
     const refreshData = () => {
         // Fetch data from SQLite when the component mounts
         getAllTodos((data) => {
           setTodos(data);
+        });
+      };
+      const refreshSettings = () => {
+        getSettings((data) => {
+            setSettingData(data[0]);
+            setName(data[0].name)
+            //setIsChecked
+            setPriority(data[0].deleteolditems)
+    
+    
         });
       };
       const today = new Date(); // Get the current date as a Date object
@@ -130,7 +158,7 @@ export default function Dashboard({ navigation }) {
       
     return (
         <View style={styles.container}>
-            <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
+            <Settings isVisible={isModalVisible} toggleModal={toggleModal}  refreshSettings={refreshSettings} settingData={ settingData}/>
             <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} refreshData={refreshData}/>
             <UpdateTodo isVisible={isModalVisibleTodoUpdate} toggleModal={toggleModalTodoUpdate} refreshData={refreshData} updateData={updateData}/>
             
@@ -187,7 +215,7 @@ export default function Dashboard({ navigation }) {
             <ScrollView
             >
                 <Text style={{ marginLeft: 10, marginTop: 10, fontSize: 20, color: '#fff' }}>
-                    Welcome, Muluken</Text>
+                    Welcome, {name}</Text>
                 <View>
                     <ScrollView
                         horizontal
