@@ -1,6 +1,6 @@
 // import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Image, StatusBar, FlatList, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
+import { Image, StatusBar, FlatList, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { Card } from 'react-native-paper';
 
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Settings from './Settings'; // Replace with your actual component path
 import AddTodo from './AddTodo';
+import UpdateTodo from './UpdateTodo';
 import { getAllTodos } from './RealmServices';
 const hheight = Dimensions.get('screen').height
 
@@ -16,9 +17,11 @@ export default function Dashboard({ navigation }) {
     const [active, setActive] = useState(0)
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisibleTodo, setModalVisibleTodo] = useState(false);
+    const [isModalVisibleTodoUpdate, setModalVisibleTodoUPDATE] = useState(false);
     const [todos, setTodos] = useState([]);
+    const [updateData, setUpdateDate] = useState({});
 
-
+    
 
 
     const measureTextHeight = (text, fontSize, width) => {
@@ -37,12 +40,15 @@ export default function Dashboard({ navigation }) {
     const toggleModalTodo = () => {
         setModalVisibleTodo(!isModalVisibleTodo);
     };
+
+    const toggleModalTodoUpdate = () => {
+        setModalVisibleTodoUPDATE(!isModalVisibleTodoUpdate);
+    };
     const backGroundColor = { "important": "#FFBF00", "todays": "#707B7C", "past": "#ACA7B2", "upcomming": "#6495ED" }
 
     const getBackground = (priority, actionDate) => {
         const today = new Date(); // Get the current date as a Date object
         const selectedDate = new Date(actionDate); // Convert actionDate to a Date object
-console.log(actionDate, today)
         if (selectedDate < today) {
             return backGroundColor['past']
         } else if (priority == 'important') {
@@ -56,22 +62,24 @@ console.log(actionDate, today)
 
     }
 
-  
+  const openFirUpdate = (title, description, actionDate, priority, id)=>{
+    setUpdateDate({title, description, actionDate, priority, id})
+        toggleModalTodoUpdate()
+  }
 
     const renderItem = ({ item }) => (
-        <View style={[styles.card, { backgroundColor: getBackground(item.priority, item.actionDate) }]}>
+        <Pressable style={[styles.card, { backgroundColor: getBackground(item.priority, item.actionDate) }]}   onPress={()=>openFirUpdate(item.title, item.description, item.actionDate, item.priority, item.id)} >
             {item.count > 0 ? <Ionicons name={'checkmark-done-circle'} size={24} style={styles.icon} color="#1ABC9C" /> :
                 <Entypo name={'circular-graph'} size={24} style={styles.icon} color="#fff" />}
             <Text style={styles.date}>{item.actionDate }</Text>
             <Text style={styles.text}>{item.title}</Text>
             <Text style={styles.text}>{item.description}</Text>
-        </View>
+        </Pressable>
     );
     useEffect(() => {
         // Fetch data from SQLite when the component mounts
         getAllTodos((data) => {
             setTodos(data);
-            console.log(data, "jjjjjjjjjjjj")
         });
     }, []);
 
@@ -111,7 +119,8 @@ console.log(actionDate, today)
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
             <AddTodo isVisible={isModalVisibleTodo} toggleModal={toggleModalTodo} refreshData={refreshData}/>
-
+            <UpdateTodo isVisible={isModalVisibleTodoUpdate} toggleModal={toggleModalTodoUpdate} refreshData={refreshData} updateData={updateData}/>
+            
             <View style={{ marginLeft: 10, marginTop: 10, marginRight: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Entypo name="menu" size={24} color="#fff" onPress={toggleModal} />
                 <Text style={{ fontWeight: 'bold', color: '#fff' }}>My Todos</Text>
