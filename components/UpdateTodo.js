@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
-import { addTodo, deleteTodo } from './RealmServices';
+import { addTodo, deleteTodo, updateTodo } from './RealmServices';
 import CheckBox from '@react-native-community/checkbox';
 import DatePicker from '@react-native-community/datetimepicker';
 // import DatePicker from 'react-native-datepicker'; // Import DatePicker
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 
 const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
-  const [title, setTitle] = useState(updateData.title);
-  const [description, setDescription] = useState(updateData.description);
+  console.log(updateData, "works ")
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [actionDate, setActionDate] = useState(new Date());
-  const [priority, setPriority] = useState(updateData.priority);
-  const [id, setId] = useState(updateData.id);
+  const [priority, setPriority] = useState('');
+  const [count, setCount] = useState('');
+  const [id, setId] = useState(0);
 
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
@@ -24,8 +26,19 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
     deleteTodo(id)
     refreshData()
     toggleModal();
-
-
+  }
+    const handleUpdate= ()=>{
+      let d = actionDate.toISOString();
+      let newDate = d.split('T')[0];
+      updateTodo(id, {
+      title,
+      description,
+      actionDate:newDate,
+      priority,
+      count: 1
+    })
+    refreshData()
+    toggleModal();
   }
   const handleSave = () => {
     // Initialize an empty errors object to track validation errors
@@ -63,13 +76,12 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
     let d = actionDate.toISOString();
      let newDate = d.split('T')[0];
 
-console.log(newDate, "sjfdisuhfiuhiu")
-    UpdateTodo({
+     updateTodo(id, {
       title,
       description,
       actionDate:newDate,
       priority,
-      count: 0
+      count: count
     });
     setActionDate(new Date())
     refreshData()
@@ -86,21 +98,27 @@ console.log(newDate, "sjfdisuhfiuhiu")
     toggleModal();
   };
 
-  // useEffect(()=>{
-    
-  //  if( Object.keys(updateData).length>0){
-  //   setPriority(updateData.priority)
-  //   setTitle(updateData.title)
-  //   setDescription(updateData.description)
-  //   // setActionDate()
-  //   }
-  // },[])
+ 
 
   const formattedDate = actionDate
   ? `${actionDate.getFullYear()}-${(actionDate.getMonth() + 1)
       .toString()
       .padStart(2, '0')}-${actionDate.getDate().toString().padStart(2, '0')}`
   : new Date().toLocaleDateString();
+
+
+  useEffect(() => {
+    // Populate the form fields when updateData changes
+    if (updateData) {
+      setTitle(updateData.title);
+      setDescription(updateData.description);
+      setActionDate(new Date(updateData.actionDate));
+      setPriority(updateData.priority);
+      setId(updateData.id);
+      setCount(updateData.count)
+    }
+  }, [updateData]);
+
   return (
     <Modal
       isVisible={isVisible}
@@ -165,7 +183,7 @@ console.log(newDate, "sjfdisuhfiuhiu")
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Save Changes</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonDoner} onPress={handleSave}>
+        <TouchableOpacity style={styles.buttonDoner} onPress={handleUpdate}>
           <Text style={styles.buttonText}>Mark as Done</Text>
         </TouchableOpacity>
         </View>
