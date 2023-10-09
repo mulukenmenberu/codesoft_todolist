@@ -17,7 +17,6 @@ const AddTodo = ({ isVisible, toggleModal }) => {
   const [titleError, setTitleError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [actionDateError, setActionDateError] = useState('');
-  const [priorityError, setPriorityError] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false); // Control date picker visibility
 
   const handleSave = () => {
@@ -49,7 +48,6 @@ const AddTodo = ({ isVisible, toggleModal }) => {
       setTitleError(errors.title || '');
       setDescriptionError(errors.description || '');
       setActionDateError(errors.actionDate || '');
-      setPriorityError(errors.priority || '');
       return;
     }
 
@@ -70,7 +68,6 @@ const AddTodo = ({ isVisible, toggleModal }) => {
     setTitleError('');
     setDescriptionError('');
     setActionDateError('');
-    setPriorityError('');
 
     // Close the modal
     toggleModal();
@@ -127,16 +124,14 @@ const AddTodo = ({ isVisible, toggleModal }) => {
           </TouchableOpacity>
           <CheckBox
             style={styles.checkbox}
-            value={priority === 'medium'}
+            value={priority === 'important'}
             onValueChange={() => {
-              setPriority('medium');
-              setPriorityError('');
+              setPriority('important');
             }}
           />
           <Text style={styles.checkboxLabel}>Important</Text>
         </View>
         {actionDateError ? <Text style={styles.errorText}>{actionDateError}</Text> : null}
-        {priorityError ? <Text style={styles.errorText}>{priorityError}</Text> : null}
 
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Save</Text>

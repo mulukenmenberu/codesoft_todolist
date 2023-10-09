@@ -3,13 +3,8 @@ import { useEffect, useState } from 'react';
 import { Image, StatusBar, FlatList, TextInput, StyleSheet, Text, View, Platform, StatusBar as stbar, Dimensions, SafeAreaView, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { Card } from 'react-native-paper';
 
-
-
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Settings from './Settings'; // Replace with your actual component path
 import AddTodo from './AddTodo';
@@ -44,14 +39,17 @@ export default function Dashboard({ navigation }) {
     };
     const backGroundColor = { "important": "#FFBF00", "todays": "#707B7C", "past": "#ACA7B2", "upcomming": "#6495ED" }
 
-    const getBackground = (type, actionDate) => {
-        if (actionDate < 1) {
+    const getBackground = (priority, actionDate) => {
+        const today = new Date(); // Get the current date as a Date object
+        const selectedDate = new Date(actionDate); // Convert actionDate to a Date object
+
+        if (selectedDate < today) {
             return backGroundColor['past']
-        } else if (type == 'important') {
+        } else if (priority == 'important') {
             return backGroundColor['important']
-        } else if (actionDate == 1) {
+        } else if (selectedDate == today) {
             return backGroundColor['todays']
-        } else if (actionDate > 1) {
+        } else if (selectedDate > today) {
             return backGroundColor['upcomming']
         }
         return backGroundColor['upcomming']
