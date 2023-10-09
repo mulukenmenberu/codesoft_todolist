@@ -56,6 +56,7 @@ console.log(actionDate, today)
 
     }
 
+  
 
     const renderItem = ({ item }) => (
         <View style={[styles.card, { backgroundColor: getBackground(item.priority, item.actionDate) }]}>
@@ -80,7 +81,32 @@ console.log(actionDate, today)
           setTodos(data);
         });
       };
-    
+      const today = new Date(); // Get the current date as a Date object
+
+      const todays = todos.filter(item => {
+        if (!item.actionDate) return false; // Skip items with null actionDate
+        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+        return selectedDate.toDateString() === today.toDateString();
+      }).length;
+      
+      const important = todos.filter(item => {
+        if (!item.actionDate) return false; // Skip items with null actionDate
+        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+        return item.priority === 'important' && selectedDate >= today;
+      }).length;
+      
+      const past = todos.filter(item => {
+        if (!item.actionDate) return false; // Skip items with null actionDate
+        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+        return selectedDate.toDateString() < today.toDateString();
+      }).length;
+      
+      const upcoming = todos.filter(item => {
+        if (!item.actionDate) return false; // Skip items with null actionDate
+        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+        return selectedDate.toDateString() > today.toDateString();
+      }).length;
+      
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal} />
@@ -105,22 +131,22 @@ console.log(actionDate, today)
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '70%' }}>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ color: '#FFBF00', fontSize: 16, marginLeft: 10 }}>
-                                ● Important: 3
+                                ● Important: {important || 0}
                             </Text>
                         </View>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ color: '#707B7C', fontSize: 16, marginLeft: 10 }}>
-                                ● Today's: 1
+                                ● Today's: {todays || 0}
                             </Text>
                         </View>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ color: '#ACA7B2', fontSize: 16, marginLeft: 10 }}>
-                                ● Past: 3
+                                ● Past: {past || 0}
                             </Text>
                         </View>
                         <View style={{ width: '50%', flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ color: '#6495ED', fontSize: 16, marginLeft: 10 }}>
-                                ● Upcoming: 1
+                                ● Upcoming: {upcoming || 0}
                             </Text>
                         </View>
                     </View>
