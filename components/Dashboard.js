@@ -9,7 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Settings from './Settings'; // Replace with your actual component path
 import AddTodo from './AddTodo';
 import UpdateTodo from './UpdateTodo';
-import { getAllTodos } from './RealmServices';
+import { getAllTodos } from './SQLiteServices';
 const hheight = Dimensions.get('screen').height
 
 export default function Dashboard({ navigation }) {

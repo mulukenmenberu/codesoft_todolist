@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
-import { addTodo } from './RealmServices';
+import { addTodo } from './SQLiteServices';
 import CheckBox from '@react-native-community/checkbox';
 import DatePicker from '@react-native-community/datetimepicker';
 // import DatePicker from 'react-native-datepicker'; // Import DatePicker
