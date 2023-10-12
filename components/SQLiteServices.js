@@ -82,6 +82,7 @@ export const addTodo = (todoData) => {
 };
 
 export const updateSetting = (updateSetting) => {
+  try{
   db.transaction((tx) => {
     tx.executeSql(
       'UPDATE settings SET name=?, deleteolditems=?',
@@ -94,9 +95,11 @@ export const updateSetting = (updateSetting) => {
       }
     );
   });
+}catch(e){}
 };
 
 export const updateTodo = (id, updatedData) => {
+  try{
   db.transaction((tx) => {
     tx.executeSql(
       'UPDATE todos SET title=?, description=?, actionDate=?, priority=?, count=? WHERE id=?',
@@ -116,9 +119,11 @@ export const updateTodo = (id, updatedData) => {
       }
     );
   });
+}catch(e){}
 };
 
 export const deleteTodo = (id) => {
+  try{
   db.transaction((tx) => {
     tx.executeSql(
       'DELETE FROM todos WHERE id=?',
@@ -131,9 +136,11 @@ export const deleteTodo = (id) => {
       }
     );
   });
+}catch(e){}
 };
 
 export const getAllTodos = (callback) => {
+  try{
   db.transaction((tx) => {
     tx.executeSql(
       'SELECT * FROM todos',
@@ -148,11 +155,13 @@ export const getAllTodos = (callback) => {
       }
     );
   });
+}catch(e){}
 };
 
 
 
 export const getSettings = (callback) => {
+  try{
   db.transaction((tx) => {
     tx.executeSql(
       'SELECT * FROM settings LIMIT 1',
@@ -167,4 +176,5 @@ export const getSettings = (callback) => {
       }
     );
   });
+}catch(e){}
 };
