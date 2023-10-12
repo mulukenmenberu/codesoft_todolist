@@ -28,17 +28,13 @@ export default function Dashboard({ navigation }) {
 
     
 
-
-    const measureTextHeight = (text, fontSize, width) => {
-        const numberOfLines = 3.5; // Define the maximum number of lines
-        const lineHeight = fontSize * 1.2; // Adjust this value as needed
-        const maxHeight = lineHeight * numberOfLines;
-
-        const TextHeight = Math.ceil(text.length / (width / fontSize)) * lineHeight;
-
-        return TextHeight <= maxHeight;
-    };
-
+    const refreshData = () => {
+        // Fetch data from SQLite when the component mounts
+        getAllTodos((data) => {
+          setTodos(data);
+        });
+      };
+      
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -94,32 +90,7 @@ export default function Dashboard({ navigation }) {
             <Text style={styles.text}>{item.description}</Text>
         </Pressable>
     );
-    useEffect(() => {
-        // Fetch data from SQLite when the component mounts
-        getAllTodos((data) => {
-            setTodos(data);
-        });
 
-        getSettings((data) => {
-            setSettingData(data[0]);
-            setName(data[0].name)
-            //setIsChecked
-            setPriority(data[0].deleteolditems)
-    
-    
-        });
-
-    }, []);
-
-
-
-    
-    const refreshData = () => {
-        // Fetch data from SQLite when the component mounts
-        getAllTodos((data) => {
-          setTodos(data);
-        });
-      };
       const refreshSettings = () => {
         getSettings((data) => {
             setSettingData(data[0]);
@@ -156,6 +127,51 @@ export default function Dashboard({ navigation }) {
         return selectedDate.toDateString() > today.toDateString();
       }).length;
       
+
+      useEffect(() => {
+        getAllTodos((data) => {
+            if(active==0){
+                setTodos(data);
+            }else if(active==1){
+                const past = data.filter(item => {
+                    if (!item.actionDate) return false; // Skip items with null actionDate
+                    const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+                    return selectedDate.toDateString() < today.toDateString();
+                  });
+                setTodos(past);
+            }
+            else if(active==2){
+                const important = data.filter(item => {
+                    if (!item.actionDate) return false; // Skip items with null actionDate
+                    const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+                    return item.priority === 'important' && selectedDate >= today;
+                  });
+                  
+                setTodos(important);
+            }
+            else if(active==3){
+                const upcoming = data.filter(item => {
+                    if (!item.actionDate) return false; // Skip items with null actionDate
+                    const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
+                    return selectedDate.toDateString() > today.toDateString();
+                  });
+                  
+                setTodos(upcoming);
+            }
+         
+        });
+
+        getSettings((data) => {
+            setSettingData(data[0]);
+            setName(data[0].name)
+            setPriority(data[0].deleteolditems)
+    
+    
+        });
+
+    }, [active]);
+
+
     return (
         <View style={styles.container}>
             <Settings isVisible={isModalVisible} toggleModal={toggleModal}  refreshSettings={refreshSettings} settingData={ settingData}/>
@@ -221,9 +237,9 @@ export default function Dashboard({ navigation }) {
                         horizontal
                         showsHorizontalScrollIndicator={false}>
                         <Text onPress={() => setActive(0)} style={{ margin: 20, fontWeight: active == 0 ? 'bold' : '', color: active == 0 ? '#2062F9' : '#CBD1DF' }}>All Todos</Text>
-                        <Text onPress={() => setActive(1)} style={{ margin: 20, fontWeight: active == 1 ? 'bold' : '', color: active == 1 ? '#2062F9' : '#CBD1DF' }}>Past Items</Text>
+                        <Text onPress={() => setActive(1)} style={{ margin: 20, fontWeight: active == 1 ? 'bold' : '', color: active == 1 ? '#2062F9' : '#CBD1DF' }}>Past</Text>
                         <Text onPress={() => setActive(2)} style={{ margin: 20, fontWeight: active == 2 ? 'bold' : '', color: active == 2 ? '#2062F9' : '#CBD1DF' }}>Important</Text>
-                        <Text onPress={() => setActive(3)} style={{ margin: 20, fontWeight: active == 3 ? 'bold' : '', color: active == 3 ? '#2062F9' : '#CBD1DF' }}>Today`s</Text>
+                        <Text onPress={() => setActive(3)} style={{ margin: 20, fontWeight: active == 3 ? 'bold' : '', color: active == 3 ? '#2062F9' : '#CBD1DF' }}>Upcommings</Text>
                     </ScrollView>
                 </View>
                 <View>
