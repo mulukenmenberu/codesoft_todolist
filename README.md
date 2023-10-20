@@ -8,7 +8,7 @@ TaskManager is a user-friendly mobile app designed to streamline your daily task
 
 2. Categorize Your Tasks: TaskManager lets you categorize your to-do items for better organization. You can sort tasks into categories like "Today's Tasks," "Past Tasks," and "Important Tasks," helping you prioritize and focus on what matters most.
 
-3. Follow-Up Reminders: Stay on track with follow-up reminders. Set due dates and receive timely notifications to ensure you never forget an important task again.
+3. Follow-Up Reminders: Stay on track with follow-up reminders. Set due dates   to ensure you never forget an important task again.
 
 4. Efficient Task Management: Managing your tasks is a breeze. You can mark tasks as completed, edit task details, and reschedule them as needed.
 
