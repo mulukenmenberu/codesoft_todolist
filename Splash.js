@@ -25,7 +25,7 @@ export default function Splash({ navigation }) {
         <Text style={{ justifyContent: 'center', fontSize: 20, color: '#fff' }}>Get Started</Text>
       </TouchableOpacity>
 
-      <StatusBar backgroundColor='black' />
+      <StatusBar backgroundColor='#363537' />
 
     </View>
   );

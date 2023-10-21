@@ -28,6 +28,30 @@ export default function Dashboard({ navigation }) {
 
     
 
+    function isDateInPast(dateString) {
+        const today = new Date();
+        const selectedDate = new Date(dateString);
+        today.setHours(0, 0, 0, 0); // Set the time to midnight for comparison
+        selectedDate.setHours(0, 0, 0, 0);
+      
+        return selectedDate < today;
+      }
+
+      function isDateInFuture(dateString) {
+        const today = new Date();
+        const selectedDate = new Date(dateString);
+        today.setHours(0, 0, 0, 0); // Set the time to midnight for comparison
+        selectedDate.setHours(0, 0, 0, 0);
+      
+        return selectedDate > today;
+      }
+      function isDateInToday(dateString) {
+        const today = new Date();
+        const selectedDate = new Date(dateString);
+        today.setHours(0, 0, 0, 0); // Set the time to midnight for comparison
+        selectedDate.setHours(0, 0, 0, 0);
+        return selectedDate.getTime() === today.getTime();
+      }
     const refreshData = () => {
         // Fetch data from SQLite when the component mounts
         getAllTodos((data) => {
@@ -48,30 +72,19 @@ export default function Dashboard({ navigation }) {
     const backGroundColor = { "important": "#FFBF00", "todays": "#707B7C", "past": "#ACA7B2", "upcomming": "#6495ED" }
 
     const getBackground = (priority, actionDate) => {
-        const today = new Date(); // Get the current date as a Date object
-        const selectedDate = new Date(actionDate); // Convert actionDate to a Date object
-        
-        // Extract year, month, and date components
-        const todayYear = today.getFullYear();
-        const todayMonth = today.getMonth();
-        const todayDate = today.getDate();
-        
-        const selectedYear = selectedDate.getFullYear();
-        const selectedMonth = selectedDate.getMonth();
-        const selectedDay = selectedDate.getDate();
+      
 
-
-     if (selectedYear === todayYear && selectedMonth === todayMonth && selectedDay === todayDate) {
+     if (isDateInToday(actionDate)) {
         return backGroundColor['todays']
-         }else if (selectedYear < todayYear || (selectedYear === todayYear && selectedMonth < todayMonth) || (selectedYear === todayYear && selectedMonth === todayMonth && selectedDay < todayDate)) {
+         }else if (isDateInPast(actionDate)) {
             return backGroundColor['past']
         }  
-        else if (priority == 'important') {
+        else if (priority == 'important' && !isDateInToday(actionDate)) {
             return backGroundColor['important']
         } 
-        // else if (selectedDate > today) {
-        //     return backGroundColor['upcomming']
-        // }
+        else if (isDateInFuture(actionDate)) {
+            return backGroundColor['upcomming']
+        }
         return backGroundColor['upcomming']
 
     }
@@ -101,30 +114,29 @@ export default function Dashboard({ navigation }) {
     
         });
       };
-      const today = new Date(); // Get the current date as a Date object
 
       const todays = todos.filter(item => {
         if (!item.actionDate) return false; // Skip items with null actionDate
-        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-        return selectedDate.toDateString() === today.toDateString();
+        return isDateInToday(item.actionDate)
       }).length;
       
       const important = todos.filter(item => {
         if (!item.actionDate) return false; // Skip items with null actionDate
-        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-        return item.priority === 'important' && selectedDate >= today;
+        return item.priority === 'important' && !isDateInPast(item.actionDate)
       }).length;
       
       const past = todos.filter(item => {
         if (!item.actionDate) return false; // Skip items with null actionDate
-        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-        return selectedDate.toDateString() < today.toDateString();
+        // return selectedDate.toDateString() < today.toDateString();
+        return isDateInPast(item.actionDate)
+
       }).length;
       
       const upcoming = todos.filter(item => {
         if (!item.actionDate) return false; // Skip items with null actionDate
-        const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-        return selectedDate.toDateString() > today.toDateString();
+        // return selectedDate.toDateString() > today.toDateString();
+        return isDateInFuture(item.actionDate)
+
       }).length;
       
 
@@ -135,16 +147,16 @@ export default function Dashboard({ navigation }) {
             }else if(active==1){
                 const past = data.filter(item => {
                     if (!item.actionDate) return false; // Skip items with null actionDate
-                    const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-                    return selectedDate.toDateString() < today.toDateString();
+                                // return selectedDate.toDateString() < today.toDateString();
+                    return isDateInPast(item.actionDate);
+
                   });
                 setTodos(past);
             }
             else if(active==2){
                 const important = data.filter(item => {
                     if (!item.actionDate) return false; // Skip items with null actionDate
-                    const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-                    return item.priority === 'important' && selectedDate >= today;
+                                return item.priority === 'important' && !isDateInPast(item.actionDate);
                   });
                   
                 setTodos(important);
@@ -152,8 +164,7 @@ export default function Dashboard({ navigation }) {
             else if(active==3){
                 const upcoming = data.filter(item => {
                     if (!item.actionDate) return false; // Skip items with null actionDate
-                    const selectedDate = new Date(item.actionDate); // Convert actionDate to a Date object
-                    return selectedDate.toDateString() > today.toDateString();
+                                return isDateInFuture(item.actionDate);
                   });
                   
                 setTodos(upcoming);

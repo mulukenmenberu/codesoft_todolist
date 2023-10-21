@@ -48,7 +48,7 @@ const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
 
     // Validate the "Action Date" field
     if (actionDate === '') {
-      errors.actionDate = 'Action Date is required';
+      errors.actionDate = '';
     }
 
     // Validate the "Priority" field
@@ -67,11 +67,12 @@ const AddTodo = ({ isVisible, toggleModal, refreshData }) => {
     // actionDate = actionDate.replace(/\//g, '-');
     let d = actionDate.toISOString();
      let newDate = d.split('T')[0];
+    let x  =  actionDate.toDateString()
 
     addTodo({
       title,
       description,
-      actionDate:newDate,
+      actionDate:x,
       priority,
       count: 0
     });

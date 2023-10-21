@@ -42,10 +42,12 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
   const handleUpdate = () => {
     let d = actionDate.toISOString();
     let newDate = d.split('T')[0];
+    let x  =  actionDate.toDateString()
+
     updateTodo(id, {
       title,
       description,
-      actionDate: newDate,
+      actionDate: x,
       priority,
       count: 1
     })
@@ -87,11 +89,12 @@ const UpdateTodo = ({ isVisible, toggleModal, refreshData, updateData }) => {
     // actionDate = actionDate.replace(/\//g, '-');
     let d = actionDate.toISOString();
     let newDate = d.split('T')[0];
+    let x  =  actionDate.toDateString()
 
     updateTodo(id, {
       title,
       description,
-      actionDate: newDate,
+      actionDate: x,
       priority,
       count: count
     });
